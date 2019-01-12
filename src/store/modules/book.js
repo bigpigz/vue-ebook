@@ -3,17 +3,16 @@
  */
 const book = {
     state: {
-        test: 3
+        fileName: ''
     },
     mutations: {
-        'SET_TEST': (state, value) => {
-            state.test = value
+        'SET_FILENAME': (state, fileName) => {
+            state.fileName = fileName
         }
     },
     actions: {
-        setTest: ({commit, state}, value) => {
-            console.log(state.test, value);
-            return commit('SET_TEST',value)
+        setFileName: ({commit}, fileName) => {
+            return commit('SET_FILENAME',fileName)
         }
     }
 }
