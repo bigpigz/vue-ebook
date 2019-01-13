@@ -11,14 +11,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import {mapGetters} from 'vuex'
+    import {ebookMixin} from '../../utils/mixin.js'
     import Epub from 'epubjs'
 
     global.ePub = Epub
     export default{
         name: '',
+        mixins:[ebookMixin],
         computed: {
-            ...mapGetters(['fileName'])
+
         },
         methods: {
             initEpub(){
@@ -53,23 +54,31 @@
             prevPage(){
                 if(this.rendition){
                     this.rendition.prev()
+                    this.hideTitleAndMenu()
                 }
             },
             toggleMenu(){
-                console.log('menu');
+//                this.$store.dispatch('setMenuVisible',!this.menuVisible)
+                this.setMenuVisible(!this.menuVisible)
             },
             nextPage(){
                 if(this.rendition){
                     this.rendition.next()
+                    this.hideTitleAndMenu()
                 }
-
+            },
+            hideTitleAndMenu(){
+//                this.$store.dispatch('setMenuVisible',false)
+                this.setMenuVisible(false)
             }
         },
         mounted(){
             const fileName = this.$route.params.fileName.split('|').join('/')
-            this.$store.dispatch('setFileName', fileName).then(() => {
+//            this.$store.dispatch('setFileName', fileName).then(() => {
+//                this.initEpub()
+//            })
+            this.setFileName(fileName).then(() => {
                 this.initEpub()
-
             })
         }
 
@@ -81,10 +90,10 @@
     .mask{
         position: absolute;
         left: 0;
-        top: 0;
+        top: px2rem(100);
         overflow: hidden;
         z-index: 999;
-        height: 100%;
+        height: 50%;
         width: 100%;
         .left{
             float: left;
